@@ -174,6 +174,8 @@ A component belongs in `Core/DesignSystem/` once it's used (or clearly reusable)
 
 ## Folder structure
 
+Conceptual layout — what each folder is *for*:
+
 ```
 App/                 SwiftUI @main entry point (generated at bootstrap)
 Features/<Feature>/  Views/, ViewModels/, Models/ — one subfolder per feature
@@ -189,6 +191,54 @@ Tests/
   SnapshotTests/      View snapshot tests
 UITests/             XCUITest end-to-end flows
 Scripts/             CI helpers, fastlane, XcodeGen/Tuist config (generated at bootstrap)
+```
+
+### Current repository tree
+
+What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Features/`, `Scripts/` only hold a placeholder `README.md` until `/bootstrap-ios` generates real source into them):
+
+```
+.
+├── .claude/
+│   ├── agents/                    9 subagents — ios-swiftui-engineer, swift-code-reviewer,
+│   │                              ios-build-test-runner, test-engineer, qa-runner,
+│   │                              release-manager, accessibility-auditor, security-auditor,
+│   │                              docs-maintainer
+│   ├── commands/
+│   │   └── bootstrap-ios.md
+│   ├── hooks/                     8 hook scripts + README.md (why each hook exists)
+│   ├── skills/                    40+ skill references — architecture, networking,
+│   │                              persistence, testing, security (MASVS), CI, fastlane,
+│   │                              design-to-code, localization, accessibility, etc.
+│   └── settings.json               permissions + hook wiring
+├── App/
+│   └── README.md                  placeholder — real entry point generated at bootstrap
+├── Core/
+│   ├── DesignSystem/README.md
+│   ├── Extensions/README.md
+│   ├── Networking/README.md
+│   ├── Persistence/README.md
+│   └── Utilities/README.md
+├── Features/
+│   └── README.md                  placeholder — real feature modules added as they're built
+├── Resources/
+│   ├── Assets.xcassets/
+│   ├── Fonts/README.md
+│   └── Localizable.xcstrings
+├── Scripts/
+│   └── README.md                  placeholder — fastlane/XcodeGen/Tuist config generated at bootstrap
+├── Tests/
+│   ├── .swiftlint.yml              relaxes force-unwrap/force-try/force-cast for test code
+│   ├── UnitTests/README.md
+│   └── SnapshotTests/README.md
+├── UITests/
+│   ├── .swiftlint.yml
+│   └── README.md
+├── .gitignore
+├── .swiftformat
+├── .swiftlint.yml
+├── CLAUDE.md
+└── README.md
 ```
 
 ## Build system
