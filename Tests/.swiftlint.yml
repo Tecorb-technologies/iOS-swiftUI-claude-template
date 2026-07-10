@@ -1,0 +1,9 @@
+# Nested override: SwiftLint merges this with the root .swiftlint.yml for files under Tests/.
+# Fixtures and expectations may force-unwrap/force-try — they're asserted, not defensive code.
+force_unwrapping:
+  severity: warning
+force_try:
+  severity: warning
+custom_rules:
+  explicit_self_disallowed:
+    severity: warning

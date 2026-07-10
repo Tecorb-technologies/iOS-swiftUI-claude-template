@@ -1,0 +1,41 @@
+# Xcode
+DerivedData/
+xcuserdata/
+*.xcworkspace/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Generated project — only project.yml / Project.swift are checked in
+*.xcodeproj/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Tuist
+Derived/
+.tuist-bin/
+Tuist/.build/
+
+# CocoaPods (only if ever exceptionally introduced)
+Pods/
+
+# fastlane
+Scripts/fastlane/report.xml
+Scripts/fastlane/Preview.html
+Scripts/fastlane/screenshots/**/*.png
+Scripts/fastlane/test_output
+
+# Secrets / signing
+.env
+*.mobileprovision
+*.p12
+*.cer
+
+# macOS
+.DS_Store

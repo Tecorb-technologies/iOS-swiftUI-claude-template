@@ -1,0 +1,51 @@
+excluded:
+  - .build
+  - DerivedData
+  - "*.xcodeproj"
+  - Scripts
+
+opt_in_rules:
+  - sorted_imports
+  - redundant_type_annotation
+  - unused_import
+  - unneeded_parentheses_in_closure_argument
+
+disabled_rules:
+  - explicit_self # SwiftFormat's `--self remove` strips explicit self instead of enforcing it
+
+line_length:
+  warning: 120
+  error: 140
+  ignores_urls: true
+  ignores_comments: true
+
+force_unwrapping:
+  severity: error
+
+force_cast:
+  severity: error
+
+force_try:
+  severity: error
+
+identifier_name:
+  min_length:
+    warning: 2
+  excluded:
+    - id
+    - url
+    - x
+    - y
+
+type_name:
+  min_length:
+    warning: 3
+
+custom_rules:
+  explicit_self_disallowed:
+    included: ".*\\.swift"
+    regex: "\\bself\\.(?!init)"
+    match_kinds:
+      - identifier
+    message: "Avoid explicit `self.` — SwiftFormat's `--self remove` should keep this out; only needed in escaping closures or initializer disambiguation."
+    severity: warning

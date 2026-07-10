@@ -1,0 +1,16 @@
+--swiftversion 5.10
+--indent 4
+--linebreaks lf
+--maxwidth 120
+--self remove
+--importgrouping alpha
+
+--enable sortImports
+--enable redundantSelf
+--enable trailingCommas
+--enable wrapArguments
+--enable duplicateImports
+--enable blankLinesAtStartOfScope
+--enable blankLinesAtEndOfScope
+
+--exclude .build,DerivedData,Tuist/.build,**/*.xcodeproj/**

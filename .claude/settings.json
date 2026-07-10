@@ -1,0 +1,119 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodegen *)",
+      "Bash(tuist *)",
+      "Bash(swift build *)",
+      "Bash(swift test *)",
+      "Bash(swift package *)",
+      "Bash(xcodebuild build *)",
+      "Bash(xcodebuild test *)",
+      "Bash(xcodebuild -list*)",
+      "Bash(xcrun simctl list *)",
+      "Bash(xcrun simctl boot *)",
+      "Bash(swiftlint *)",
+      "Bash(swiftformat *)",
+      "Bash(fastlane *)",
+      "Bash(which xcodegen)",
+      "Bash(which tuist)",
+      "Bash(which swiftlint)",
+      "Bash(which swiftformat)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
+    ],
+    "ask": [
+      "Bash(xcodebuild clean*)",
+      "Bash(git push *)",
+      "Bash(rm *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ ! -f .claude/project.json ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"This iOS template is not bootstrapped yet (.claude/project.json is missing). Run the tecorb-ios-bootstrap skill or the /bootstrap-ios command before writing app code.\"}}'; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-bash-guard.sh\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); if echo \"$input\" | grep -q '\"command\":\"git commit'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"A commit was just created. Propose a CHANGELOG.md entry summarizing this change in user-facing terms, and ask before writing it.\"}}'; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-format-lint.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-test-runner.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit-security-nudge.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-lint-gate.sh\""
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-docs-sync-reminder.sh\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start-status.sh\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/notification-desktop.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
