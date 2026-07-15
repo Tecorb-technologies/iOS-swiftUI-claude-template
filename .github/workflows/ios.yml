@@ -1,0 +1,46 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ios-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: macos-15
+    env:
+      SCHEME: MyToDoApp
+      DESTINATION: 'platform=iOS Simulator,name=iPhone 16,OS=latest'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tooling
+        run: brew install xcodegen swiftlint swiftformat
+
+      - name: Lint
+        run: |
+          swiftlint lint --strict
+          swiftformat --lint .
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Unit tests
+        run: |
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -only-testing:MyToDoAppTests \
+            CODE_SIGNING_ALLOWED=NO

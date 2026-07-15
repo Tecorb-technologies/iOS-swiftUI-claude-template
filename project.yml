@@ -1,0 +1,79 @@
+name: MyToDoApp
+
+options:
+  bundleIdPrefix: com.tecorb
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+configs:
+  Debug: debug
+  Release: release
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_STRICT_CONCURRENCY: complete
+
+targets:
+  MyToDoApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App
+        excludes: ["**/README.md"]
+      - path: Features
+        excludes: ["**/README.md"]
+      - path: Core
+        excludes: ["**/README.md"]
+      - path: Resources
+        excludes: ["**/README.md"]
+    configFiles:
+      Debug: Config/Debug.xcconfig
+      Release: Config/Release.xcconfig
+    settings:
+      base:
+        PRODUCT_NAME: MyToDoApp
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_CFBundleDisplayName: "My ToDo App"
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
+
+  MyToDoAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Tests
+        excludes: ["**/README.md"]
+    dependencies:
+      - target: MyToDoApp
+
+  MyToDoAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: UITests
+        excludes: ["**/README.md"]
+    dependencies:
+      - target: MyToDoApp
+
+schemes:
+  MyToDoApp:
+    build:
+      targets:
+        MyToDoApp: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - MyToDoAppTests
+        - MyToDoAppUITests
+    archive:
+      config: Release

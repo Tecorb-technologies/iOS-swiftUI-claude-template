@@ -1,0 +1,10 @@
+// Debug build configuration — consumed by project.yml (XcodeGen).
+// DEVELOPMENT_TEAM is intentionally blank until an Apple Developer Team ID is set.
+
+PRODUCT_BUNDLE_IDENTIFIER = com.tecorb.mytodoapp
+DEVELOPMENT_TEAM =
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+
+// Base URL injected at build time, never hardcoded in source.
+// The `/$()/` escape keeps xcconfig from treating `//` as a comment.
+API_BASE_URL = https:/$()/api.dev.example.com

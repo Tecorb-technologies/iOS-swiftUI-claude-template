@@ -2,14 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Status: Tecorb iOS SwiftUI bootstrap template
+## Status: My ToDo App (bootstrapped)
 
-This repo is a reusable Tecorb-wide template for starting a new iOS Swift/SwiftUI client project — it is **not** a specific app. The generic scaffold (folder skeleton, lint/format config, `.claude/` extension architecture) already exists. No `project.yml`/`Project.swift`, `.xcodeproj`, or app entry point exists yet, because those depend on facts specific to the real client project (app name, bundle ID, backend, etc.).
+This repo has been bootstrapped from the Tecorb iOS SwiftUI template into a real client project.
 
-**Before writing any app code**, this template must be bootstrapped:
-- Run `/bootstrap-ios`, or just start doing real feature/build work — the `tecorb-ios-bootstrap` skill auto-triggers on an un-bootstrapped repo and asks the required questions.
-- Answers land in `.claude/project.json` — the single source of truth other agents/commands read. Check that file for the app name, bundle ID, backend style, CI target, and other recorded facts once it exists.
-- A `PreToolUse` hook in `.claude/settings.json` will nudge toward bootstrapping if you try to write/edit/run commands while `.claude/project.json` is still missing. See `.claude/hooks/README.md` for the full set of automation/guardrail hooks and why each one exists.
+- **App name**: My ToDo App
+- **Module/target/scheme**: `MyToDoApp`
+- **Bundle ID**: `com.tecorb.mytodoapp`
+- **Apple Developer Team ID**: not set yet (`DEVELOPMENT_TEAM` blank in `Config/*.xcconfig`)
+- **Minimum iOS**: 17.0
+- **Backend**: REST (minimal `APIClient` stub in `Core/Networking/`)
+- **Project generator**: XcodeGen (`project.yml` at repo root)
+- **CI**: GitHub Actions (`.github/workflows/ios.yml`)
+- **Distribution**: TestFlight-first
+
+`.claude/project.json` is the single source of truth for these facts — read it, don't re-derive. To change an answer, run `/bootstrap-ios --force` (re-answer, pre-filled) or `/bootstrap-ios --field=<dotted.path>=<value>` (one field). See `.claude/hooks/README.md` for the full set of automation/guardrail hooks and why each one exists.
+
+Generated app-code files are tagged `// GENERATED-BY-BOOTSTRAP` so a re-run won't clobber hand-edits silently.
 
 ## Architecture (standing Tecorb defaults)
 

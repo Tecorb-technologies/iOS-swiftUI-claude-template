@@ -80,11 +80,30 @@ Before running any generator, check it's installed (`which xcodegen` or `which t
 - Populate `Info.plist` values (`CFBundleDisplayName`, `CFBundleName`) via the generator config rather than hand-editing a checked-in `Info.plist`.
 - If `backend.style` is `rest` or `graphql`, add a minimal stub under `Core/Networking` (a bare `APIClient` shape for REST, or a note for GraphQL client setup) — don't build out a full networking layer speculatively, just enough to unblock the first feature.
 - If `ci.target` is `github-actions`, write `.github/workflows/ios.yml` with a build+test job. If `xcode-cloud`, write `ci_scripts/ci_post_clone.sh`.
+- Ensure `Resources/Assets.xcassets` contains an `AppIcon.appiconset` (an empty single-`1024x1024` set is fine — no image file needed). The generated Info.plist references `AppIcon` via `ASSETCATALOG_COMPILER_APPICON_NAME`, so a fresh catalog with only `Contents.json` fails the build with "None of the input catalogs contained a matching … app icon set named AppIcon".
 
 ## 6. Update CLAUDE.md
 
 Fill in the app name, bundle ID, architecture, and CI sections with real values (see the CLAUDE.md structure already in this repo — sections 1–2 are app-specific, 3–8 are stable template documentation, don't touch those).
 
-## 7. Report back
+## 7. Verify the build end-to-end
 
-Summarize what was created, and tell the developer the next command to run (e.g. `xcodebuild -list` to confirm the scheme, or open the generated `.xcodeproj`/`.xcworkspace`).
+Don't declare the bootstrap done until a real generate + build passes. Run these (substitute the recorded generator and the `<Scheme>` = app module name):
+
+```bash
+brew install xcodegen                 # or: brew install tuist — only if step 5 found it missing
+xcodegen generate                     # or: tuist generate — creates <Scheme>.xcodeproj from project.yml
+xcodebuild -list                      # confirm the scheme is "<Scheme>" — never guess it
+xcodebuild build -scheme <Scheme> \
+  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  CODE_SIGNING_ALLOWED=NO             # CODE_SIGNING_ALLOWED=NO so a blank DEVELOPMENT_TEAM doesn't block the build
+```
+
+Notes:
+- If the destination name is ambiguous (multiple installed OS versions for one device), pin it: `name=iPhone 16,OS=18.5`.
+- These are shell commands — never append `# inline comments`, since an interactive zsh without `INTERACTIVE_COMMENTS` passes `#` as an argument and the command fails.
+- If the build fails, fix the cause (e.g. the missing `AppIcon` set above) and re-run before reporting success.
+
+## 8. Report back
+
+Summarize what was created, confirm the build passed, and tell the developer the next step (`open <Scheme>.xcodeproj`, or scaffold the first feature).

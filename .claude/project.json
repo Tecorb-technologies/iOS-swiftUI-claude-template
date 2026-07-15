@@ -1,0 +1,21 @@
+{
+  "$schemaVersion": 1,
+  "generatedAt": "2026-07-15T07:58:02Z",
+  "app": {
+    "name": "My ToDo App",
+    "moduleName": "MyToDoApp",
+    "bundleIdPrefix": "com.tecorb",
+    "bundleId": "com.tecorb.mytodoapp",
+    "teamId": null,
+    "minIOSVersion": "17.0"
+  },
+  "toolchain": { "projectGenerator": "xcodegen", "dependencyManager": "spm" },
+  "architecture": { "uiFramework": "swiftui-first", "pattern": "mvvm-observation", "concurrency": "swift-concurrency" },
+  "backend": { "style": "rest", "baseURLPlaceholder": "API_BASE_URL" },
+  "design": { "figmaFileUrl": null },
+  "ci": { "target": "github-actions" },
+  "distribution": { "channel": "testflight-first" },
+  "bootstrapHistory": [
+    { "timestamp": "2026-07-15T07:58:02Z", "action": "initial-bootstrap", "fieldsChanged": [] }
+  ]
+}
