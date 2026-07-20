@@ -5,7 +5,7 @@ description: Given a Figma frame/link or screenshot, extracts spacing, color, an
 
 # Design-to-Code Token Mapping
 
-This skill governs *token reconciliation* specifically. For the broader design→code implementation workflow (reading a Figma node, reusing Code Connect mappings, adapting the reference output to this project's components), use `figma:figma-design-to-code` and `figma:figma-swiftui` — load those first if starting from an actual Figma URL. This skill is what you do once you have concrete spacing/color/type values in hand, Figma-sourced or from a screenshot estimate.
+This skill governs *token reconciliation* specifically. For the broader design→code implementation workflow (reading a Figma node, reusing Code Connect mappings, adapting the reference output to this project's components), use the figma MCP's `get_design_context` (structure + variables) and `get_variable_defs` (raw token values); reuse `get_code_connect_map` mappings where present. This skill is what you do once you have concrete spacing/color/type values in hand, Figma-sourced or from a screenshot estimate.
 
 ## The rule: map, don't invent
 

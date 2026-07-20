@@ -172,6 +172,8 @@ extension Color {
 
 A component belongs in `Core/DesignSystem/` once it's used (or clearly reusable) across 2+ Features or is a visual primitive; otherwise it stays in `Features/<Feature>/Views/` until that reuse actually happens. Every `View` — DesignSystem or Feature — ships a `#Preview` with at least 2 states (for a ViewModel-backed screen, usually loading/empty/error per the populated-state preview; for a primitive, usually a content/size/dark-mode variant). Components support Dynamic Type and light/dark mode via color assets, not fixed sizes or hardcoded RGB.
 
+Design-driven screens pull live context from the Figma MCP (registered in `.mcp.json`). Before your first design-driven screen, authenticate it once: run `/mcp`, select **figma**, and **Authenticate**.
+
 ## Folder structure
 
 Conceptual layout — what each folder is *for*:

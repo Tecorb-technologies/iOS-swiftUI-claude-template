@@ -51,7 +51,7 @@ Ask these in order, one at a time or in a short batch — whichever reads more n
   "toolchain": { "projectGenerator": "xcodegen | tuist", "dependencyManager": "spm" },
   "architecture": { "uiFramework": "swiftui-first", "pattern": "mvvm-observation", "concurrency": "swift-concurrency" },
   "backend": { "style": "rest | graphql | none", "baseURLPlaceholder": null },
-  "design": { "figmaFileUrl": null },
+  "design": { "figmaFileUrl": null, "codeConnectConfigured": false },
   "ci": { "target": "xcode-cloud | github-actions" },
   "distribution": { "channel": "testflight-first" },
   "bootstrapHistory": [
@@ -80,6 +80,15 @@ Before running any generator, check it's installed (`which xcodegen` or `which t
 - Populate `Info.plist` values (`CFBundleDisplayName`, `CFBundleName`) via the generator config rather than hand-editing a checked-in `Info.plist`.
 - If `backend.style` is `rest` or `graphql`, add a minimal stub under `Core/Networking` (a bare `APIClient` shape for REST, or a note for GraphQL client setup) — don't build out a full networking layer speculatively, just enough to unblock the first feature.
 - If `ci.target` is `github-actions`, write `.github/workflows/ios.yml` with a build+test job. If `xcode-cloud`, write `ci_scripts/ci_post_clone.sh`.
+
+## 5.1 Wire up the Figma design source (only if a Figma link was provided)
+
+If the developer gave a Figma link in Step 2:
+
+1. Confirm the figma MCP is registered (`.mcp.json` has a `figma` server) and connected; if not, tell them to run `claude mcp add --transport http figma https://mcp.figma.com/mcp --scope project` then `/mcp → figma → Authenticate`, and don't proceed with design work until connected.
+2. Record the link in `.claude/project.json` under `design.figmaFileUrl`.
+3. Offer (don't force) an initial Code Connect pass mapping `Core/DesignSystem` components to the design file's component set; if accepted, set `design.codeConnectConfigured` to `true` when done.
+4. If no link was given, skip all of the above and leave the fields `null`/`false`.
 
 ## 6. Update CLAUDE.md
 

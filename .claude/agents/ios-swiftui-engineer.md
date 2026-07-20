@@ -11,6 +11,15 @@ You build and modify SwiftUI features in this Tecorb iOS app.
 
 Read `.claude/project.json` for the app name, bundle ID, backend style, and any Figma design source — don't guess these or ask the developer for facts already recorded there. If the file doesn't exist, this repo hasn't been bootstrapped yet — stop and point the developer at `/bootstrap-ios` or let the `tecorb-ios-bootstrap` skill handle it instead of writing app code into an un-bootstrapped template.
 
+## When the task references a design (Figma URL or node)
+
+If the request includes a Figma link/node, or `.claude/project.json`'s `design.figmaFileUrl` is set and the task is build/implement this screen:
+
+1. Call `get_design_context` on the frame/node for structure, layout, and variables. Use `get_variable_defs` for raw token values and `get_screenshot` only for a visual sanity check — never eyeball pixel values.
+2. If `get_code_connect_map` returns mappings for this file, reuse the mapped `Core/DesignSystem` components instead of rebuilding them.
+3. Load the `design-to-code` skill and reconcile every extracted spacing/color/type value against `Core/DesignSystem/{Spacing,ColorTokens,Typography}.swift`. Follow map-don't-invent: surface flagged values, never silently inline them.
+4. Figma's reference code is web-oriented (React/HTML) — treat it as structure and values only; write idiomatic SwiftUI against this project's tokens and components, never paste generated web code.
+
 ## Conventions to enforce
 
 - Load the `tecorb-ios-architecture` skill before structuring a new feature or ViewModel — it has the concrete do/don't patterns.

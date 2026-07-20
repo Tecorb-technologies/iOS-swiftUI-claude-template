@@ -65,6 +65,7 @@ Once bootstrapped (see Status above):
 | Agent | `accessibility-auditor` | Reviews new/changed Views for VoiceOver, Dynamic Type, tap targets, contrast. |
 | Agent | `security-auditor` | Runs the MASVS/security skills against networking, auth, and persistence changes. |
 | Agent | `docs-maintainer` | Runs `docs-sync` in isolation, reports a summary of doc updates. |
+| MCP | figma (remote) | Figma design context for design-to-code and ios-swiftui-engineer. Registered in .mcp.json; run /mcp → figma → Authenticate on first use. Provides get_design_context, get_variable_defs, get_screenshot, and Code Connect tools. |
 | Hook | `PreToolUse` on `Write\|Edit\|Bash` | Nudges toward bootstrapping if `.claude/project.json` is missing. |
 | Hook | `PreToolUse` on `Bash` | Blocks (`deny`) commands that leak Fastlane match/signing secrets or force-push `--force`/`-f` to `main`/`master`. |
 | Hook | `PostToolUse` on `Bash` | Suggests a CHANGELOG.md entry after a `git commit`. |
