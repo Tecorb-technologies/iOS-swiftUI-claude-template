@@ -207,9 +207,10 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   │                              release-manager, accessibility-auditor, security-auditor,
 │   │                              docs-maintainer
 │   ├── commands/
-│   │   └── bootstrap-ios.md
+│   │   ├── bootstrap-ios.md
+│   │   └── figma-screen.md
 │   ├── hooks/                     8 hook scripts + README.md (why each hook exists)
-│   ├── skills/                    40+ skill references — architecture, networking,
+│   ├── skills/                    38 skill references — architecture, networking,
 │   │                              persistence, testing, security (MASVS), CI, fastlane,
 │   │                              design-to-code, localization, accessibility, etc.
 │   └── settings.json               permissions + hook wiring
@@ -237,6 +238,7 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   ├── .swiftlint.yml
 │   └── README.md
 ├── .gitignore
+├── .mcp.json                       registers the remote Figma MCP server
 ├── .swiftformat
 ├── .swiftlint.yml
 ├── CLAUDE.md
@@ -319,8 +321,9 @@ This repo ships a full `.claude/` extension set — skills, commands, agents, an
 | Type | Examples |
 |---|---|
 | Skills | `tecorb-ios-architecture`, `networking-layer`, `persistence-layer`, `concurrency-safety`, `ios-testing`, `swiftui-components`, `ci-pipeline`, `fastlane-conventions`, `mobile-secure-storage`, and more — each scoped to one convention area |
-| Command | `/bootstrap-ios` — explicit, idempotent bootstrap re-run |
+| Commands | `/bootstrap-ios` (explicit, idempotent bootstrap re-run) and `/figma-screen <frame-url> [FeatureName]` (build a SwiftUI screen from a Figma frame, reconciling values against `Core/DesignSystem` tokens) |
 | Agents | `ios-swiftui-engineer` (builds features), `swift-code-reviewer` (read-only review), `ios-build-test-runner` / `qa-runner` / `test-engineer` (build and test), `security-auditor`, `accessibility-auditor`, `release-manager`, `docs-maintainer` |
+| MCP | `figma` (remote) — live design context for design-to-code, registered in `.mcp.json`; authenticate once via `/mcp` → **figma** → **Authenticate** |
 | Hooks | 10 hooks across `PreToolUse`/`PostToolUse`/`Stop`/`SessionStart`/`Notification` — auto-format/lint on save, a blocking guard against leaked signing secrets or force-pushes to `main`, a lint gate at task completion, targeted test-run suggestions, an automatic security-review nudge on sensitive files, and more |
 
 See [`CLAUDE.md`](CLAUDE.md) for the complete extension table and quality-gate policy, and [`.claude/hooks/README.md`](.claude/hooks/README.md) for what each hook does and why — since hook definitions live in JSON (`.claude/settings.json`), which can't hold comments, that README is the source of truth for hook rationale.
