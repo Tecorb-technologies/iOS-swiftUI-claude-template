@@ -207,11 +207,14 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   │                              release-manager, accessibility-auditor, security-auditor,
 │   │                              docs-maintainer
 │   ├── commands/
-│   │   └── bootstrap-ios.md
-│   ├── hooks/                     8 hook scripts + README.md (why each hook exists)
-│   ├── skills/                    40+ skill references — architecture, networking,
+│   │   ├── bootstrap-ios.md
+│   │   ├── figma-screen.md
+│   │   └── jira-task.md
+│   ├── hooks/                     9 hook scripts + README.md (why each hook exists)
+│   ├── skills/                    39 skill references — architecture, networking,
 │   │                              persistence, testing, security (MASVS), CI, fastlane,
-│   │                              design-to-code, localization, accessibility, etc.
+│   │                              design-to-code, jira-ticket-context, localization,
+│   │                              accessibility, etc.
 │   └── settings.json               permissions + hook wiring
 ├── App/
 │   └── README.md                  placeholder — real entry point generated at bootstrap
@@ -237,6 +240,7 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   ├── .swiftlint.yml
 │   └── README.md
 ├── .gitignore
+├── .mcp.json                       registers the remote Figma + Atlassian MCP servers
 ├── .swiftformat
 ├── .swiftlint.yml
 ├── CLAUDE.md
@@ -319,8 +323,9 @@ This repo ships a full `.claude/` extension set — skills, commands, agents, an
 | Type | Examples |
 |---|---|
 | Skills | `tecorb-ios-architecture`, `networking-layer`, `persistence-layer`, `concurrency-safety`, `ios-testing`, `swiftui-components`, `ci-pipeline`, `fastlane-conventions`, `mobile-secure-storage`, and more — each scoped to one convention area |
-| Command | `/bootstrap-ios` — explicit, idempotent bootstrap re-run |
+| Commands | `/bootstrap-ios` (explicit, idempotent bootstrap re-run), `/figma-screen <frame-url> [FeatureName]` (build a SwiftUI screen from a Figma frame, reconciling values against `Core/DesignSystem` tokens), and `/jira-task <ticket-key-or-search-text> [FeatureName]` (fetch a Jira ticket via MCP, confirm it in chat, use it as the working spec — optional, and the *only* way Jira is ever touched; nothing is fetched automatically) |
 | Agents | `ios-swiftui-engineer` (builds features), `swift-code-reviewer` (read-only review), `ios-build-test-runner` / `qa-runner` / `test-engineer` (build and test), `security-auditor`, `accessibility-auditor`, `release-manager`, `docs-maintainer` |
-| Hooks | 10 hooks across `PreToolUse`/`PostToolUse`/`Stop`/`SessionStart`/`Notification` — auto-format/lint on save, a blocking guard against leaked signing secrets or force-pushes to `main`, a lint gate at task completion, targeted test-run suggestions, an automatic security-review nudge on sensitive files, and more |
+| MCP | `figma` (remote) — live design context for design-to-code, registered in `.mcp.json`; authenticate once via `/mcp` → **figma** → **Authenticate**. `atlassian` (remote) — Jira ticket context, used only via `/jira-task`; authenticate via `/mcp` → **atlassian** → **Authenticate**. Entirely optional — no other workflow in this repo depends on it. Read-only Jira tools are pre-allowed; comment/transition tools always require approval. |
+| Hooks | 11 hooks across `PreToolUse`/`PostToolUse`/`Stop`/`SessionStart`/`Notification`/`PermissionRequest` — auto-format/lint on save, a blocking guard against leaked signing secrets or force-pushes to `main`, a lint gate at task completion, targeted test-run suggestions, an automatic security-review nudge on sensitive files, a category-specific audio alert on every permission prompt, and more |
 
 See [`CLAUDE.md`](CLAUDE.md) for the complete extension table and quality-gate policy, and [`.claude/hooks/README.md`](.claude/hooks/README.md) for what each hook does and why — since hook definitions live in JSON (`.claude/settings.json`), which can't hold comments, that README is the source of truth for hook rationale.

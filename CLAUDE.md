@@ -62,6 +62,9 @@ Once bootstrapped (see Status above):
 |---|---|---|
 | Skill | `tecorb-ios-bootstrap` | Auto-triggers on an un-bootstrapped repo; asks project-context questions, writes `.claude/project.json`, generates the app-specific scaffold. |
 | Command | `/bootstrap-ios` | Explicit, idempotent re-run of the bootstrap flow (`--force` to change an answer, `--field=value` to update one field). |
+| Command | `/figma-screen` | Builds a SwiftUI screen from a Figma frame: pulls design context, reconciles values against `Core/DesignSystem` tokens, then hands off to `ios-swiftui-engineer` + `test-engineer` and verifies. Args: `<figma-frame-url-or-node> [FeatureName]`. |
+| Skill | `jira-ticket-context` | Reference workflow invoked only by `/jira-task` — has no trigger of its own and never runs on its own initiative. Fetches a ticket's full context via the `atlassian` MCP, presents it in chat for explicit confirmation/edits, then hands off to `ios-swiftui-engineer` + `test-engineer` using the ticket as the working spec. Supports an optional write-back mode (auto status-transition + comment-with-confirmation), tracked in `.claude/jira-integration.json`. Jira is entirely optional — nothing in this repo requires it. |
+| Command | `/jira-task` | The *only* entry point for Jira ticket context — nothing is ever fetched unless this command is explicitly run. Args: `<ticket-key-or-search-text> [FeatureName]`. |
 | Skill | `tecorb-ios-architecture` | Reference for MVVM+Observation+Concurrency conventions, folder layout, and the do/don't patterns agents follow. |
 | Agent | `ios-swiftui-engineer` | Builds/modifies Views, ViewModels, Models, and `Core/DesignSystem` components. |
 | Agent | `swift-code-reviewer` | Read-only review: architecture boundaries, concurrency correctness, lint/format compliance. |
@@ -73,6 +76,7 @@ Once bootstrapped (see Status above):
 | Agent | `security-auditor` | Runs the MASVS/security skills against networking, auth, and persistence changes. |
 | Agent | `docs-maintainer` | Runs `docs-sync` in isolation, reports a summary of doc updates. |
 | MCP | figma (remote) | Figma design context for design-to-code and ios-swiftui-engineer. Registered in .mcp.json; run /mcp → figma → Authenticate on first use. Provides get_design_context, get_variable_defs, get_screenshot, and Code Connect tools. |
+| MCP | atlassian (remote) | Jira ticket context for `jira-ticket-context`/`ios-swiftui-engineer`, used only via `/jira-task`. Registered in `.mcp.json`; run `/mcp → atlassian → Authenticate` on first use. Entirely optional — registering the server doesn't require connecting it, and no other workflow in this repo depends on it. Read-only tools (`getJiraIssue`, `searchJiraIssuesUsingJql`, etc.) are pre-allowed in `.claude/settings.json`; `addCommentToJiraIssue`/`transitionJiraIssue` always require approval. |
 | Hook | `PreToolUse` on `Write\|Edit\|Bash` | Nudges toward bootstrapping if `.claude/project.json` is missing. |
 | Hook | `PreToolUse` on `Bash` | Blocks (`deny`) commands that leak Fastlane match/signing secrets or force-push `--force`/`-f` to `main`/`master`. |
 | Hook | `PostToolUse` on `Bash` | Suggests a CHANGELOG.md entry after a `git commit`. |
@@ -83,6 +87,7 @@ Once bootstrapped (see Status above):
 | Hook | `Stop` (secondary) | If the diff touches public-facing behavior (new screen/command/config), reminds to run `/docs-sync` — advisory only, never auto-runs. |
 | Hook | `SessionStart` | Prints current git branch, last commit, and TODO/FIXME count. |
 | Hook | `Notification` | Fires a desktop notification on Claude Code's notification events. |
+| Hook | `PermissionRequest` (no matcher) | Plays a category-specific macOS system sound (git op / command / file write / network-external / fallback) whenever a permission prompt is about to show, so a paused Auto-mode session is audible without watching the terminal. |
 
 All hook scripts live under `.claude/hooks/`, with per-hook rationale and conventions in `.claude/hooks/README.md` (JSON can't hold comments, so that file is the source of truth for "why").
 

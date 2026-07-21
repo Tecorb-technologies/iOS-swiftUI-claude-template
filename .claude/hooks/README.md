@@ -81,6 +81,20 @@ reviewed by a human, not auto-run. **Known gap:** no `.claude/commands/docs-sync
 file exists yet in this template (only the `docs-sync` *skill* does) — the reminder
 says so explicitly rather than silently pointing at a command that doesn't exist.
 
+### H9 — `permission-request-sound.sh` (`PermissionRequest`, side-effect only)
+Plays a macOS system sound (`afplay`) just before a permission-approval prompt is
+shown, chosen by category: git Bash commands -> `Hero.aiff`, other Bash commands ->
+`Tink.aiff`, `Edit`/`Write`/`NotebookEdit` -> `Glass.aiff`, `WebFetch`/`WebSearch`/any
+`mcp__*` tool -> `Submarine.aiff`, everything else -> `Ping.aiff`. Fires in every
+permission mode, never emits a decision, and pairs with H6's desktop notification —
+together they give a combined audible + visual cue for the same event.
+**Known gaps:** the git check is a literal `\bgit\b` text match, not real command
+parsing, so an unrelated command that merely contains the word "git" (e.g.
+`grep git CHANGELOG.md`) plays the git sound instead of the generic one; rapid
+back-to-back prompts can overlap their sounds (no debounce); and this is
+macOS-only by design — `command -v afplay` guards a silent no-op elsewhere, same
+as every other shell-out in this file.
+
 ## Conventions for adding another hook
 
 - One `.sh` file per hook, named `<event>-<what-it-does>.sh`, with the same
