@@ -9,7 +9,9 @@ enum AppTab: String, CaseIterable, Identifiable {
     case family
     case rewards
 
-    var id: String { rawValue }
+    var id: String {
+        rawValue
+    }
 
     var title: String {
         switch self {

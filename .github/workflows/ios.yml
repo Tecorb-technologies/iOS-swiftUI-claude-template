@@ -14,7 +14,7 @@ jobs:
     name: Build & Test
     runs-on: macos-15
     env:
-      SCHEME: CloudToFigma
+      SCHEME: Permission
       DESTINATION: platform=iOS Simulator,name=iPhone 16
     steps:
       - uses: actions/checkout@v4

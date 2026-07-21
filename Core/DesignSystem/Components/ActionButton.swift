@@ -30,7 +30,9 @@ struct ActionButton: View {
         .accessibilityLabel(title)
     }
 
-    private var isLink: Bool { style == .link }
+    private var isLink: Bool {
+        style == .link
+    }
 
     private var foreground: Color {
         switch style {

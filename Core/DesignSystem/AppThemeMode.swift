@@ -8,7 +8,9 @@ enum AppThemeMode: String, CaseIterable, Identifiable, Sendable {
     case light
     case dark
 
-    var id: String { rawValue }
+    var id: String {
+        rawValue
+    }
 
     var title: String {
         switch self {
