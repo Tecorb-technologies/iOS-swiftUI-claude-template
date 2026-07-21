@@ -77,6 +77,7 @@ Once bootstrapped (see Status above):
 | Hook | `Stop` (secondary) | If the diff touches public-facing behavior (new screen/command/config), reminds to run `/docs-sync` — advisory only, never auto-runs. |
 | Hook | `SessionStart` | Prints current git branch, last commit, and TODO/FIXME count. |
 | Hook | `Notification` | Fires a desktop notification on Claude Code's notification events. |
+| Hook | `PermissionRequest` (no matcher) | Plays a category-specific macOS system sound (git op / command / file write / network-external / fallback) whenever a permission prompt is about to show, so a paused Auto-mode session is audible without watching the terminal. |
 
 All hook scripts live under `.claude/hooks/`, with per-hook rationale and conventions in `.claude/hooks/README.md` (JSON can't hold comments, so that file is the source of truth for "why").
 
