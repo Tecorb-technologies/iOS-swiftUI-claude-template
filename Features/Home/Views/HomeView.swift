@@ -155,7 +155,7 @@ private struct HomeHeader: View {
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            ZStack(alignment: .topTrailing) {
+            ZStack(alignment: .topLeading) {
                 IconImage(asset, width: 22, height: 22)
                     .foregroundStyle(AppColor.textPrimary)
                     .frame(width: 40, height: 40)
@@ -163,17 +163,21 @@ private struct HomeHeader: View {
                     .overlay(Circle().strokeBorder(AppColor.cardBorderAccent, lineWidth: 1))
 
                 if showsUnread {
-                    Circle()
-                        .fill(AppColor.unreadDot)
-                        .frame(width: 9, height: 9)
-                        .overlay(Circle().strokeBorder(AppColor.surface, lineWidth: 1.5))
-                        .offset(x: 1, y: -1)
+                    // Figma unread (10:18 / 18:18): 13×13 asset (#F43F5E + ring). Ellipse is
+                    // 9×9 at (23, 7); stroke overflows 2pt each side → origin (21, 5).
+                    Image("icon-unread")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 13, height: 13)
+                        .offset(x: 21, y: 5)
+                        .accessibilityHidden(true)
                 }
             }
             .frame(width: 40, height: 40)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)
+        .accessibilityValue(showsUnread ? "Unread" : "")
     }
 }
 

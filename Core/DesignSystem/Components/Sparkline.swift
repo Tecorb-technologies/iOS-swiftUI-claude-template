@@ -65,7 +65,7 @@ struct Sparkline: View {
 #Preview {
     HStack(spacing: 24) {
         Sparkline(values: [3, 4, 3.5, 5, 5.5, 7, 8])
-        Sparkline(values: [4, 6, 3.5, 6.5, 4, 6, 5], color: AppColor.statusWatch)
+        Sparkline(values: [4, 3.7, 5.2, 5.5, 3, 5, 8, 6.8], color: AppColor.statusWatch)
     }
     .frame(height: 28)
     .padding()

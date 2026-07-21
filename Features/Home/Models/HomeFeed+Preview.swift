@@ -26,7 +26,7 @@
                         name: "Jake",
                         note: "A couple of late-night sessions worth a look",
                         status: .watch,
-                        trend: [4, 6, 3.5, 6.5, 4, 6, 5]
+                        trend: [4, 3.7, 5.2, 5.5, 3, 5, 8, 6.8]
                     ),
                 ],
                 footnote: "Patterns, not surveillance",

@@ -38,13 +38,30 @@ struct SettingsView: View {
                 .foregroundStyle(AppColor.textPrimary)
             HStack {
                 Spacer()
-                Button("Done") { dismiss() }
-                    .font(AppFont.pillButton)
-                    .foregroundStyle(AppColor.accent)
+                doneButton
             }
         }
         .padding(.horizontal, 16)
         .frame(height: 56)
+    }
+
+    /// Circular icon button matching the Home header's gear/bell button styling, so the sheet's
+    /// dismiss control reads as part of the same visual language rather than a text link.
+    private var doneButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "checkmark")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(AppColor.textPrimary)
+                .frame(width: 40, height: 40)
+                .background(AppColor.surface.opacity(0.75), in: Circle())
+                .overlay(Circle().strokeBorder(AppColor.cardBorderAccent, lineWidth: 1))
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Done")
     }
 
     // MARK: Sections

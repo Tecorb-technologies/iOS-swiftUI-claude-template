@@ -8,7 +8,7 @@ This repo has been bootstrapped from the Tecorb iOS SwiftUI template into a spec
 
 - **App name**: Permission (project/target/scheme + `CFBundleDisplayName`)
 - **Bundle ID**: `com.tecorb.permission` (prefix `com.tecorb`)
-- **Development Team**: not set yet (signing to be configured later)
+- **Development Team**: `AJ67RUJC7P`
 - **Minimum iOS**: 17.0
 - **Project generator**: XcodeGen (`project.yml` → `CloudToFigma.xcodeproj`; Tuist not used)
 - **Backend**: REST-shaped service layer (`Core/Networking`) currently backed by bundled dummy JSON via `MockAPIClient`; swap to `LiveAPIClient` against a real base URL when the backend exists.

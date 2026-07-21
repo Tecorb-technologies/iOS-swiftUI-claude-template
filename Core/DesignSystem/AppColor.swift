@@ -59,8 +59,8 @@ enum AppColor {
     // MARK: Status indicators
 
     static let statusCalm = Color.adaptive(light: "#22C55E", dark: "#4ADE80")
-    static let statusWatch = Color.adaptive(light: "#F59E0B", dark: "#FBBF24")
-    static let unreadDot = Color.adaptive(light: "#EF4444", dark: "#F87171")
+    /// Watch-status amber — Figma Jake sparkline + status dot (`#F59E0B` in light and dark).
+    static let statusWatch = Color(hex: "#F59E0B")
 
     // MARK: Misc
 

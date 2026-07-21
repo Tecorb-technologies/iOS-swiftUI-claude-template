@@ -5,7 +5,7 @@
     "name": "Permission",
     "bundleIdPrefix": "com.tecorb",
     "bundleId": "com.tecorb.permission",
-    "teamId": null,
+    "teamId": "AJ67RUJC7P",
     "minIOSVersion": "17.0"
   },
   "toolchain": { "projectGenerator": "xcodegen", "dependencyManager": "spm" },
