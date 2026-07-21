@@ -7,8 +7,11 @@ excluded:
 opt_in_rules:
   - sorted_imports
   - redundant_type_annotation
-  - unused_import
   - unneeded_parentheses_in_closure_argument
+  - force_unwrapping # config below; force_unwrapping is opt-in so it must be listed here to take effect
+
+analyzer_rules:
+  - unused_import # only runs under `swiftlint analyze`, not `swiftlint lint`
 
 disabled_rules:
   - explicit_self # SwiftFormat's `--self remove` strips explicit self instead of enforcing it
@@ -18,6 +21,9 @@ line_length:
   error: 140
   ignores_urls: true
   ignores_comments: true
+
+trailing_comma:
+  mandatory_comma: true # match SwiftFormat's `--enable trailingCommas`, which adds them in multiline literals
 
 force_unwrapping:
   severity: error

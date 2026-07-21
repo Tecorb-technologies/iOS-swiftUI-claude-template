@@ -24,8 +24,8 @@ if ! command -v swiftformat >/dev/null 2>&1 || ! command -v swiftlint >/dev/null
 fi
 
 swiftformat "$path" >/dev/null 2>&1 || true
-swiftlint --fix --path "$path" >/dev/null 2>&1 || true
-remaining=$(swiftlint lint --path "$path" --quiet 2>&1 || true)
+swiftlint --fix "$path" >/dev/null 2>&1 || true
+remaining=$(swiftlint lint --quiet "$path" 2>&1 || true)
 
 if [ -n "$remaining" ]; then
   esc=$(echo "$remaining" | tr '\n' ' ' | sed 's/"/\\"/g')

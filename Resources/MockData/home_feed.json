@@ -1,0 +1,73 @@
+{
+  "greeting": {
+    "title": "Good evening, Dana",
+    "subtitle": "Thursday, July 17 · all calm today"
+  },
+  "primary_section_title": "Today · Your family",
+  "family_status": {
+    "tag": "Family status",
+    "timeframe": "This week",
+    "headline": "A calm, creative week for your family.",
+    "members": [
+      {
+        "id": "emma",
+        "name": "Emma",
+        "note": "Calm week — creative & school topics",
+        "status": "calm",
+        "trend": [3, 4, 3.5, 5, 5.5, 7, 8]
+      },
+      {
+        "id": "jake",
+        "name": "Jake",
+        "note": "A couple of late-night sessions worth a look",
+        "status": "watch",
+        "trend": [4, 6, 3.5, 6.5, 4, 6, 5]
+      }
+    ],
+    "footnote": "Patterns, not surveillance",
+    "action_title": "Full picture"
+  },
+  "family_win": {
+    "tag": "Family win",
+    "headline": "Emma read more than she gamed this week.",
+    "subtitle": "That's two weeks in a row.",
+    "action_title": "Celebrate"
+  },
+  "supporting_section_title": "Supporting content",
+  "todays_step": {
+    "tag": "Today's step",
+    "progress_label": "Day 6 of 14",
+    "step_number": 6,
+    "total_steps": 14,
+    "title": "Set your family's evening screen rhythm",
+    "subtitle": "A 2-minute read on winding down before bed.",
+    "action_title": "Start step"
+  },
+  "video": {
+    "badge": "Watch · 5 min",
+    "title": "Talking to kids about what they see online",
+    "source": "From the Permission library",
+    "action_title": "Play video"
+  },
+  "utilities": [
+    {
+      "id": "refer",
+      "kind": "refer",
+      "title": "Refer a family",
+      "subtitle": "Invite friends — it's free for them too.",
+      "action_title": "Share"
+    },
+    {
+      "id": "reward",
+      "kind": "reward",
+      "title": "Send a reward",
+      "subtitle": "ASK points for a job well done.",
+      "action_title": "Open"
+    }
+  ],
+  "resources": {
+    "title": "Resources library",
+    "subtitle": "Articles & guides — always free",
+    "action_title": "Browse"
+  }
+}

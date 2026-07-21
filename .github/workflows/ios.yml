@@ -1,0 +1,49 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: macos-15
+    env:
+      SCHEME: CloudToFigma
+      DESTINATION: platform=iOS Simulator,name=iPhone 16
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install xcodegen swiftlint swiftformat
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Format check
+        run: swiftformat --lint .
+
+      - name: Lint
+        run: swiftlint lint --strict
+
+      - name: Build & test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -destination "$DESTINATION" \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults.xcresult
+          if-no-files-found: ignore

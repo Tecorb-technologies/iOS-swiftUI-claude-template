@@ -1,5 +1,27 @@
 {
   "sourceLanguage" : "en",
-  "strings" : {},
+  "strings" : {
+    "“System” follows your device’s appearance setting." : {
+
+    },
+    "%@ →" : {
+
+    },
+    "%@ is coming soon" : {
+
+    },
+    "more content below" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Theme" : {
+
+    },
+    "Try again" : {
+
+    }
+  },
   "version" : "1.0"
 }

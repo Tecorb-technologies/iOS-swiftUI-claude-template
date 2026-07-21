@@ -2,14 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Status: Tecorb iOS SwiftUI bootstrap template
+## Status: Permission (bootstrapped)
 
-This repo is a reusable Tecorb-wide template for starting a new iOS Swift/SwiftUI client project — it is **not** a specific app. The generic scaffold (folder skeleton, lint/format config, `.claude/` extension architecture) already exists. No `project.yml`/`Project.swift`, `.xcodeproj`, or app entry point exists yet, because those depend on facts specific to the real client project (app name, bundle ID, backend, etc.).
+This repo has been bootstrapped from the Tecorb iOS SwiftUI template into a specific client app, **Permission**.
 
-**Before writing any app code**, this template must be bootstrapped:
-- Run `/bootstrap-ios`, or just start doing real feature/build work — the `tecorb-ios-bootstrap` skill auto-triggers on an un-bootstrapped repo and asks the required questions.
-- Answers land in `.claude/project.json` — the single source of truth other agents/commands read. Check that file for the app name, bundle ID, backend style, CI target, and other recorded facts once it exists.
-- A `PreToolUse` hook in `.claude/settings.json` will nudge toward bootstrapping if you try to write/edit/run commands while `.claude/project.json` is still missing. See `.claude/hooks/README.md` for the full set of automation/guardrail hooks and why each one exists.
+- **App name**: Permission (project/target/scheme + `CFBundleDisplayName`)
+- **Bundle ID**: `com.tecorb.permission` (prefix `com.tecorb`)
+- **Development Team**: not set yet (signing to be configured later)
+- **Minimum iOS**: 17.0
+- **Project generator**: XcodeGen (`project.yml` → `CloudToFigma.xcodeproj`; Tuist not used)
+- **Backend**: REST-shaped service layer (`Core/Networking`) currently backed by bundled dummy JSON via `MockAPIClient`; swap to `LiveAPIClient` against a real base URL when the backend exists.
+- **Design source**: Figma — <https://www.figma.com/design/TwzxAuxO4lVNOk86R9oLly/claudeTofigma> (pull via the `figma` MCP; authenticate with `/mcp → figma → Authenticate`).
+- **CI**: GitHub Actions (`.github/workflows/ios.yml`).
+- **Theme**: light + dark, following the device appearance automatically (no pinned `preferredColorScheme`); semantic tokens live in `Core/DesignSystem/AppColor.swift`.
+
+`.claude/project.json` is the single source of truth other agents/commands read — check it for these recorded facts. To change an answer, run `/bootstrap-ios --force` (or `--field=value`).
 
 ## Architecture (standing Tecorb defaults)
 

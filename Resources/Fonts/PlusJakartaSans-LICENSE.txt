@@ -1,0 +1,10 @@
+Plus Jakarta Sans
+Copyright 2020 The Plus Jakarta Sans Project Authors
+(https://github.com/tokotype/PlusJakartaSans)
+
+Licensed under the SIL Open Font License, Version 1.1.
+Full license text: https://openfontlicense.org  (OFL-1.1)
+
+The bundled .ttf files (Regular / Medium / SemiBold / Bold / ExtraBold / Italic)
+were obtained from Google Fonts (https://fonts.google.com/specimen/Plus+Jakarta+Sans)
+and are redistributed here under the terms of the OFL.
