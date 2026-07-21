@@ -1,0 +1,25 @@
+{
+  "$schemaVersion": 1,
+  "generatedAt": "2026-07-21T12:47:32Z",
+  "app": {
+    "name": "Permission",
+    "bundleIdPrefix": "com.tecorb",
+    "bundleId": "com.tecorb.permission",
+    "teamId": "AJ67RUJC7P",
+    "minIOSVersion": "17.0"
+  },
+  "toolchain": { "projectGenerator": "xcodegen", "dependencyManager": "spm" },
+  "architecture": { "uiFramework": "swiftui-first", "pattern": "mvvm-observation", "concurrency": "swift-concurrency" },
+  "backend": {
+    "style": "rest",
+    "baseURLPlaceholder": "https://api.cloudtofigma.example.com",
+    "note": "REST-shaped service layer backed by a bundled dummy-JSON mock (MockAPIClient). Swap in LiveAPIClient against a real base URL when the backend exists."
+  },
+  "design": { "figmaFileUrl": "https://www.figma.com/design/TwzxAuxO4lVNOk86R9oLly/claudeTofigma", "codeConnectConfigured": false },
+  "ci": { "target": "github-actions" },
+  "distribution": { "channel": "testflight-first" },
+  "bootstrapHistory": [
+    { "timestamp": "2026-07-21T12:47:32Z", "action": "initial-bootstrap", "fieldsChanged": [] },
+    { "timestamp": "2026-07-21T20:40:00Z", "action": "rename", "fieldsChanged": ["app.name", "app.bundleId"] }
+  ]
+}

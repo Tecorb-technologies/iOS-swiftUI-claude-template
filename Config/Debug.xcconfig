@@ -1,0 +1,12 @@
+// Shared build settings — Debug. Applied at the project level via project.yml `configFiles`.
+// Per-target PRODUCT_BUNDLE_IDENTIFIER lives in project.yml so test targets get their own id.
+
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+SWIFT_VERSION = 6.0
+DEVELOPMENT_TEAM = AJ67RUJC7P
+CODE_SIGN_STYLE = Automatic
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
