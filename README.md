@@ -13,7 +13,7 @@ Pre-development. Design and planning in progress; scaffolding to follow.
 ---
 
 
-# Tecorb iOS SwiftUI Bootstrap Template
+# iOS SwiftUI Bootstrap Template
 
 A reusable Tecorb-wide starting point for a new iOS Swift/SwiftUI client project. This repo is a **template**, not a specific app: the folder skeleton, lint/format config, and `.claude/` Claude Code extension set already exist, but the app-specific pieces (`project.yml`/`Project.swift`, `.xcodeproj`, app entry point) don't exist until the template is bootstrapped against a real client project.
 
