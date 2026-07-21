@@ -208,11 +208,13 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   │                              docs-maintainer
 │   ├── commands/
 │   │   ├── bootstrap-ios.md
-│   │   └── figma-screen.md
-│   ├── hooks/                     8 hook scripts + README.md (why each hook exists)
-│   ├── skills/                    38 skill references — architecture, networking,
+│   │   ├── figma-screen.md
+│   │   └── jira-task.md
+│   ├── hooks/                     9 hook scripts + README.md (why each hook exists)
+│   ├── skills/                    39 skill references — architecture, networking,
 │   │                              persistence, testing, security (MASVS), CI, fastlane,
-│   │                              design-to-code, localization, accessibility, etc.
+│   │                              design-to-code, jira-ticket-context, localization,
+│   │                              accessibility, etc.
 │   └── settings.json               permissions + hook wiring
 ├── App/
 │   └── README.md                  placeholder — real entry point generated at bootstrap
@@ -238,7 +240,7 @@ What actually exists in this repo today, pre-bootstrap (`App/`, `Core/*`, `Featu
 │   ├── .swiftlint.yml
 │   └── README.md
 ├── .gitignore
-├── .mcp.json                       registers the remote Figma MCP server
+├── .mcp.json                       registers the remote Figma + Atlassian MCP servers
 ├── .swiftformat
 ├── .swiftlint.yml
 ├── CLAUDE.md
@@ -321,9 +323,9 @@ This repo ships a full `.claude/` extension set — skills, commands, agents, an
 | Type | Examples |
 |---|---|
 | Skills | `tecorb-ios-architecture`, `networking-layer`, `persistence-layer`, `concurrency-safety`, `ios-testing`, `swiftui-components`, `ci-pipeline`, `fastlane-conventions`, `mobile-secure-storage`, and more — each scoped to one convention area |
-| Commands | `/bootstrap-ios` (explicit, idempotent bootstrap re-run) and `/figma-screen <frame-url> [FeatureName]` (build a SwiftUI screen from a Figma frame, reconciling values against `Core/DesignSystem` tokens) |
+| Commands | `/bootstrap-ios` (explicit, idempotent bootstrap re-run), `/figma-screen <frame-url> [FeatureName]` (build a SwiftUI screen from a Figma frame, reconciling values against `Core/DesignSystem` tokens), and `/jira-task <ticket-key-or-search-text> [FeatureName]` (fetch a Jira ticket via MCP, confirm it in chat, use it as the working spec) |
 | Agents | `ios-swiftui-engineer` (builds features), `swift-code-reviewer` (read-only review), `ios-build-test-runner` / `qa-runner` / `test-engineer` (build and test), `security-auditor`, `accessibility-auditor`, `release-manager`, `docs-maintainer` |
-| MCP | `figma` (remote) — live design context for design-to-code, registered in `.mcp.json`; authenticate once via `/mcp` → **figma** → **Authenticate** |
+| MCP | `figma` (remote) — live design context for design-to-code, registered in `.mcp.json`; authenticate once via `/mcp` → **figma** → **Authenticate**. `atlassian` (remote) — Jira ticket context for `jira-ticket-context`; authenticate via `/mcp` → **atlassian** → **Authenticate**. Read-only Jira tools are pre-allowed; comment/transition tools always require approval. |
 | Hooks | 11 hooks across `PreToolUse`/`PostToolUse`/`Stop`/`SessionStart`/`Notification`/`PermissionRequest` — auto-format/lint on save, a blocking guard against leaked signing secrets or force-pushes to `main`, a lint gate at task completion, targeted test-run suggestions, an automatic security-review nudge on sensitive files, a category-specific audio alert on every permission prompt, and more |
 
 See [`CLAUDE.md`](CLAUDE.md) for the complete extension table and quality-gate policy, and [`.claude/hooks/README.md`](.claude/hooks/README.md) for what each hook does and why — since hook definitions live in JSON (`.claude/settings.json`), which can't hold comments, that README is the source of truth for hook rationale.
