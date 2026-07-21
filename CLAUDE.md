@@ -55,6 +55,7 @@ Once bootstrapped (see Status above):
 |---|---|---|
 | Skill | `tecorb-ios-bootstrap` | Auto-triggers on an un-bootstrapped repo; asks project-context questions, writes `.claude/project.json`, generates the app-specific scaffold. |
 | Command | `/bootstrap-ios` | Explicit, idempotent re-run of the bootstrap flow (`--force` to change an answer, `--field=value` to update one field). |
+| Command | `/figma-screen` | Builds a SwiftUI screen from a Figma frame: pulls design context, reconciles values against `Core/DesignSystem` tokens, then hands off to `ios-swiftui-engineer` + `test-engineer` and verifies. Args: `<figma-frame-url-or-node> [FeatureName]`. |
 | Skill | `tecorb-ios-architecture` | Reference for MVVM+Observation+Concurrency conventions, folder layout, and the do/don't patterns agents follow. |
 | Agent | `ios-swiftui-engineer` | Builds/modifies Views, ViewModels, Models, and `Core/DesignSystem` components. |
 | Agent | `swift-code-reviewer` | Read-only review: architecture boundaries, concurrency correctness, lint/format compliance. |
