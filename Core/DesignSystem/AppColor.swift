@@ -68,11 +68,13 @@ enum AppColor {
 
     // MARK: Gradients (top → bottom)
 
-    /// Header "sky" gradient behind the top of the screen.
-    static let skyGradient = [
-        Color.adaptive(light: "#E0E7FF", dark: "#2E2A5E"),
-        Color.adaptive(light: "#EEF2FF", dark: "#1E1B4B"),
-        Color.adaptive(light: "#F8FAFC", dark: "#121117"),
+    /// Header "sky" wash. Stops ease into `background` so the light theme doesn't show a hard
+    /// band where the indigo tint meets white (Figma ends at `#F8FAFC`, which reads as a seam).
+    static let skyGradientStops: [Gradient.Stop] = [
+        .init(color: Color.adaptive(light: "#E0E7FF", dark: "#2E2A5E"), location: 0),
+        .init(color: Color.adaptive(light: "#EEF2FF", dark: "#1E1B4B"), location: 0.38),
+        .init(color: Color.adaptive(light: "#F5F7FF", dark: "#161322"), location: 0.68),
+        .init(color: background, location: 1),
     ]
 
     /// Radial indigo fill used behind the video card media.

@@ -117,9 +117,22 @@ struct HomeView: View {
         }
     }
 
+    /// Soft sky wash behind the header. Taller than Figma's 240pt block, eased into the page
+    /// background, and opacity-masked at the bottom so there isn't a hard cutoff line.
     private var skyGradient: some View {
-        LinearGradient(colors: AppColor.skyGradient, startPoint: .top, endPoint: .bottom)
-            .frame(height: 260)
+        LinearGradient(stops: AppColor.skyGradientStops, startPoint: .top, endPoint: .bottom)
+            .frame(height: 320)
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .white, location: 0),
+                        .init(color: .white, location: 0.5),
+                        .init(color: .clear, location: 1),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .frame(maxHeight: .infinity, alignment: .top)
             .ignoresSafeArea(edges: .top)
             .allowsHitTesting(false)
