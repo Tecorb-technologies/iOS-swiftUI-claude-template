@@ -1,9 +1,11 @@
 ---
 name: jira-ticket-context
-description: Fetches a Jira ticket's full context (title, description, acceptance criteria, comments, labels, status) via the atlassian MCP server when a developer references it by key (e.g. PROJ-123), Jira URL, or name/description, presents it in chat for explicit confirmation or edits, then uses it as the working spec to hand off implementation to ios-swiftui-engineer. Auto-triggers on a ticket-key-shaped token, a Jira URL, or a clear description of a specific ticket (e.g. "pull up PROJ-123", "let's implement the login bug ticket", "what's the spec for the onboarding story") when the developer's intent is to start or review that ticket's work now — not when a ticket ID merely appears in passing (a commit reference, "this relates to PROJ-100 but we already fixed that"). Prefer the explicit /jira-task command when intent is ambiguous.
+description: Fetches a Jira ticket's full context (title, description, acceptance criteria, comments, labels, status) via the atlassian MCP server, presents it in chat for explicit confirmation or edits, then uses it as the working spec to hand off implementation to ios-swiftui-engineer. This skill has no trigger of its own and never runs on its own initiative — it is invoked exclusively by the /jira-task command, when a developer explicitly runs it. Jira and the atlassian MCP are entirely optional: nothing in this repo requires them for feature development, testing, or any other workflow, and no ticket data is ever fetched unless a developer explicitly runs /jira-task.
 ---
 
 # Jira Ticket Context
+
+Optional. This skill only runs when the developer explicitly invokes `/jira-task <ticket-key-or-search-text> [FeatureName]` — it has no auto-trigger and is never invoked on its own initiative from something a developer merely mentions in conversation. Whether the atlassian MCP is connected has zero bearing on any other feature-development, testing, or build workflow in this repo; developers can supply their own specs with no Jira involvement at all, exactly as before this feature existed.
 
 Pulls a Jira ticket's full context through the `atlassian` MCP server and turns it into a working spec for a coding task, mirroring how `design-to-code`/`figma-screen` pull Figma context: connect → fetch → present for review → hand off to implementation and verification agents.
 
