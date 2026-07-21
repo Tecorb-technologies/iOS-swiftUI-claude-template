@@ -12,12 +12,16 @@ concurrency:
 jobs:
   build-test:
     name: Build & Test
-    runs-on: macos-15
+    # macos-26 ships Xcode 26.5 (matches local Tecorb setup); default on this image is 26.5.
+    runs-on: macos-26
     env:
       SCHEME: Permission
       DESTINATION: platform=iOS Simulator,name=iPhone 17 Pro
     steps:
       - uses: actions/checkout@v4
+
+      - name: Select Xcode 26.5
+        run: sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
 
       - name: Install tools
         run: brew install xcodegen swiftlint swiftformat
@@ -31,33 +35,35 @@ jobs:
       - name: Lint
         run: swiftlint lint --strict
 
-      # macos-15 runners sometimes list only placeholder destinations until CoreSimulator
-      # rebuilds its cache — selecting Xcode and listing devices fixes that (actions/runner-images#12862).
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
-
       - name: Prepare simulators
         run: xcrun simctl list > /dev/null
 
       - name: Build & test
         run: |
           set -o pipefail
-          # Prefer a concrete available iPhone simulator; fall back to the env DESTINATION.
+          # Prefer iPhone 17 Pro when available; otherwise first available iPhone.
           SIM_ID=$(xcrun simctl list devices available -j | python3 -c '
           import json, sys
           data = json.load(sys.stdin)
+          preferred = None
+          fallback = None
           for runtime, devices in data.get("devices", {}).items():
               if "iOS" not in runtime:
                   continue
               for device in devices:
-                  if device.get("isAvailable") and "iPhone" in device.get("name", ""):
-                      print(device["udid"])
-                      raise SystemExit
+                  if not device.get("isAvailable") or "iPhone" not in device.get("name", ""):
+                      continue
+                  if device["name"] == "iPhone 17 Pro" and preferred is None:
+                      preferred = device["udid"]
+                  elif fallback is None:
+                      fallback = device["udid"]
+          print(preferred or fallback or "")
           ')
           if [ -n "$SIM_ID" ]; then
             DESTINATION="platform=iOS Simulator,id=$SIM_ID"
           fi
           echo "Using destination: $DESTINATION"
+          xcodebuild -version
           xcodebuild test \
             -scheme "$SCHEME" \
             -destination "$DESTINATION" \
