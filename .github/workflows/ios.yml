@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-15
     env:
       SCHEME: Permission
-      DESTINATION: platform=iOS Simulator,name=iPhone 16
+      DESTINATION: platform=iOS Simulator,name=iPhone 17 Pro
     steps:
       - uses: actions/checkout@v4
 
@@ -42,6 +42,22 @@ jobs:
       - name: Build & test
         run: |
           set -o pipefail
+          # Prefer a concrete available iPhone simulator; fall back to the env DESTINATION.
+          SIM_ID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)
+          for runtime, devices in data.get("devices", {}).items():
+              if "iOS" not in runtime:
+                  continue
+              for device in devices:
+                  if device.get("isAvailable") and "iPhone" in device.get("name", ""):
+                      print(device["udid"])
+                      raise SystemExit
+          ')
+          if [ -n "$SIM_ID" ]; then
+            DESTINATION="platform=iOS Simulator,id=$SIM_ID"
+          fi
+          echo "Using destination: $DESTINATION"
           xcodebuild test \
             -scheme "$SCHEME" \
             -destination "$DESTINATION" \

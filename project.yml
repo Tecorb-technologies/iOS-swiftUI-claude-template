@@ -71,6 +71,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tecorb.permission.tests
+        GENERATE_INFOPLIST_FILE: YES
 
   PermissionUITests:
     type: bundle.ui-testing
@@ -85,6 +86,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tecorb.permission.uitests
+        GENERATE_INFOPLIST_FILE: YES
 
 schemes:
   Permission:
