@@ -56,6 +56,8 @@ Once bootstrapped (see Status above):
 | Skill | `tecorb-ios-bootstrap` | Auto-triggers on an un-bootstrapped repo; asks project-context questions, writes `.claude/project.json`, generates the app-specific scaffold. |
 | Command | `/bootstrap-ios` | Explicit, idempotent re-run of the bootstrap flow (`--force` to change an answer, `--field=value` to update one field). |
 | Command | `/figma-screen` | Builds a SwiftUI screen from a Figma frame: pulls design context, reconciles values against `Core/DesignSystem` tokens, then hands off to `ios-swiftui-engineer` + `test-engineer` and verifies. Args: `<figma-frame-url-or-node> [FeatureName]`. |
+| Skill | `jira-ticket-context` | Auto-triggers when a developer references a Jira ticket (key, URL, or name/description) with intent to start or review it now; fetches full context via the `atlassian` MCP, presents it in chat for explicit confirmation/edits, then hands off to `ios-swiftui-engineer` + `test-engineer` using the ticket as the working spec. Supports an optional write-back mode (auto status-transition + comment-with-confirmation), tracked in `.claude/jira-integration.json`. |
+| Command | `/jira-task` | Explicit, developer-invoked entry point for the `jira-ticket-context` skill. Args: `<ticket-key-or-search-text> [FeatureName]`. |
 | Skill | `tecorb-ios-architecture` | Reference for MVVM+Observation+Concurrency conventions, folder layout, and the do/don't patterns agents follow. |
 | Agent | `ios-swiftui-engineer` | Builds/modifies Views, ViewModels, Models, and `Core/DesignSystem` components. |
 | Agent | `swift-code-reviewer` | Read-only review: architecture boundaries, concurrency correctness, lint/format compliance. |
@@ -67,6 +69,7 @@ Once bootstrapped (see Status above):
 | Agent | `security-auditor` | Runs the MASVS/security skills against networking, auth, and persistence changes. |
 | Agent | `docs-maintainer` | Runs `docs-sync` in isolation, reports a summary of doc updates. |
 | MCP | figma (remote) | Figma design context for design-to-code and ios-swiftui-engineer. Registered in .mcp.json; run /mcp → figma → Authenticate on first use. Provides get_design_context, get_variable_defs, get_screenshot, and Code Connect tools. |
+| MCP | atlassian (remote) | Jira ticket context for `jira-ticket-context`/`ios-swiftui-engineer`. Registered in `.mcp.json`; run `/mcp → atlassian → Authenticate` on first use. Read-only tools (`getJiraIssue`, `searchJiraIssuesUsingJql`, etc.) are pre-allowed in `.claude/settings.json`; `addCommentToJiraIssue`/`transitionJiraIssue` always require approval. |
 | Hook | `PreToolUse` on `Write\|Edit\|Bash` | Nudges toward bootstrapping if `.claude/project.json` is missing. |
 | Hook | `PreToolUse` on `Bash` | Blocks (`deny`) commands that leak Fastlane match/signing secrets or force-push `--force`/`-f` to `main`/`master`. |
 | Hook | `PostToolUse` on `Bash` | Suggests a CHANGELOG.md entry after a `git commit`. |
