@@ -7,12 +7,18 @@ struct CardStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(AppColor.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            // Cast the shadow from the rounded-rect shape (a cheap, stable shadow path) rather than
+            // from the card's composited alpha. An alpha-derived shadow re-rasterizes as the layer
+            // crosses sub-pixel boundaries during slow scrolling — the visible source of hitching.
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(AppColor.surface)
+                    .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
+            }
             .overlay(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .strokeBorder(borderColor, lineWidth: 1)
             )
-            .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
     }
 }
 

@@ -83,7 +83,9 @@ struct HomeView: View {
 
     private func feedView(for feed: HomeFeed) -> some View {
         ScrollView(showsIndicators: false) {
-            LazyVStack(alignment: .leading, spacing: 12) {
+            // Eager VStack — the Home feed is short/fixed. LazyVStack remeasures cells as they
+            // enter the viewport and produces visible scroll hitching with mixed card heights.
+            VStack(alignment: .leading, spacing: 12) {
                 GreetingView(greeting: feed.greeting)
 
                 SectionLabel(feed.primarySectionTitle)
@@ -117,22 +119,16 @@ struct HomeView: View {
         }
     }
 
-    /// Soft sky wash behind the header. Taller than Figma's 240pt block, eased into the page
-    /// background, and opacity-masked at the bottom so there isn't a hard cutoff line.
+    /// Soft sky wash behind the header. Taller than Figma's 240pt block; the gradient's final stop
+    /// is `AppColor.background`, so it dissolves into the page with no seam and no cutoff line.
+    ///
+    /// Deliberately opaque — no `.mask()`. A translucent full-width layer behind the ScrollView
+    /// forces the compositor to re-blend the moving feed against it every frame (it can't treat the
+    /// layers below as occluded), which is the remaining source of scroll hitching. Baking the fade
+    /// into the stops keeps the layer opaque and visually identical.
     private var skyGradient: some View {
         LinearGradient(stops: AppColor.skyGradientStops, startPoint: .top, endPoint: .bottom)
             .frame(height: 320)
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .white, location: 0),
-                        .init(color: .white, location: 0.5),
-                        .init(color: .clear, location: 1),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
             .frame(maxHeight: .infinity, alignment: .top)
             .ignoresSafeArea(edges: .top)
             .allowsHitTesting(false)

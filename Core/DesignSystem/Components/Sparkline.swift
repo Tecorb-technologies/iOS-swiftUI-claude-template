@@ -2,6 +2,9 @@ import SwiftUI
 
 /// A tiny trend line used in the family-status rows. Draws a smoothed curve (Catmull-Rom) through
 /// the normalized series with a filled dot at the last point, matching the Figma design.
+///
+/// Uses `Canvas` (not `GeometryReader`) so layout stays stable while the parent `ScrollView` moves —
+/// GeometryReader-based sparklines remeasure on every scroll frame and cause visible jerking.
 struct Sparkline: View {
     let values: [Double]
     var color: Color = AppColor.accent
@@ -9,17 +12,36 @@ struct Sparkline: View {
     private let dotRadius: CGFloat = 3
 
     var body: some View {
-        GeometryReader { proxy in
-            let pts = points(in: proxy.size)
-            ZStack(alignment: .topLeading) {
-                curve(through: pts)
-                    .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                if let last = pts.last {
-                    Circle()
-                        .fill(color)
-                        .frame(width: dotRadius * 2, height: dotRadius * 2)
-                        .position(last)
-                }
+        Canvas { context, size in
+            let pts = points(in: size)
+            guard pts.count > 1 else { return }
+
+            var path = Path()
+            path.move(to: pts[0])
+            for index in 0 ..< pts.count - 1 {
+                let p0 = pts[max(index - 1, 0)]
+                let p1 = pts[index]
+                let p2 = pts[index + 1]
+                let p3 = pts[min(index + 2, pts.count - 1)]
+                let control1 = CGPoint(x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6)
+                let control2 = CGPoint(x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6)
+                path.addCurve(to: p2, control1: control1, control2: control2)
+            }
+
+            context.stroke(
+                path,
+                with: .color(color),
+                style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
+            )
+
+            if let last = pts.last {
+                let dotRect = CGRect(
+                    x: last.x - dotRadius,
+                    y: last.y - dotRadius,
+                    width: dotRadius * 2,
+                    height: dotRadius * 2
+                )
+                context.fill(Path(ellipseIn: dotRect), with: .color(color))
             }
         }
         .accessibilityHidden(true)
@@ -40,24 +62,6 @@ struct Sparkline: View {
             let normalized = (value - minValue) / range
             let y = vInset + (1 - CGFloat(normalized)) * usableHeight
             return CGPoint(x: CGFloat(index) * stepX, y: y)
-        }
-    }
-
-    private func curve(through pts: [CGPoint]) -> Path {
-        Path { path in
-            guard let first = pts.first else { return }
-            path.move(to: first)
-
-            for index in 0 ..< pts.count - 1 {
-                let p0 = pts[max(index - 1, 0)]
-                let p1 = pts[index]
-                let p2 = pts[index + 1]
-                let p3 = pts[min(index + 2, pts.count - 1)]
-                // Catmull-Rom → cubic Bézier control points.
-                let control1 = CGPoint(x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6)
-                let control2 = CGPoint(x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6)
-                path.addCurve(to: p2, control1: control1, control2: control2)
-            }
         }
     }
 }

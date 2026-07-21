@@ -33,19 +33,23 @@ struct FamilyWinCard: View {
             }
         }
         .padding(16)
-        .background(
-            LinearGradient(
-                colors: [AppColor.winCardTop, AppColor.surface],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 20, style: .continuous)
-        )
+        // Shadow cast from the shape (stable shadow path), not the card's composited alpha, so it
+        // doesn't re-rasterize on sub-pixel movement during slow scrolling. See CardStyle.
+        .background {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [AppColor.winCardTop, AppColor.surface],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
+        }
         .overlay(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(AppColor.winBorder, lineWidth: 1)
         )
-        .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
     }
 }
 
